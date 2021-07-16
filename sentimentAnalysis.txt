@@ -1,0 +1,13 @@
+import nltk
+nltk.data.path.append("E:/Python Learning/NLTK All Packages/")
+import pandas as pd
+from textblob import TextBlob
+
+data_file = pd.read_csv('C:/Users/smile/Desktop/twitter_ncoc_15thousand_after_preprocessing.csv')
+
+def sentiment (text):
+    return TextBlob(text).sentiment[0]
+
+data_file['sentiment'] = data_file['Text'].apply (lambda x:sentiment(x))
+
+print(data_file)
