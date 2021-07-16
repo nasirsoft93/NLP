@@ -1,0 +1,34 @@
+from gensim.corpora import Dictionary
+import nltk
+nltk.data.path.append("E:/Python Learning/NLTK All Packages/")
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+import pandas as pd
+from nltk.stem import WordNetLemmatizer
+wlt = WordNetLemmatizer()
+stop_words = stopwords.words('english')
+
+data_file = pd.read_csv('C:/Users/smile/Desktop/MS (CS)/Semester 3/Research Related/Own_Research_TextMining/twitter_COVID_Final.csv')
+
+#covertion to lower case
+data_file['Text'] = data_file['Text'].apply(lambda x: " ".join(x.lower () for x in x.split()))
+#remove punctuations
+data_file['Text'] = data_file['Text'].str.replace ('[^\w\s]','')
+
+#03 Removing stop words
+data_file['Text'] = data_file['Text'].apply(lambda x: " ".join(x for x in x.split() if x not in stop_words))
+
+#Tokenized
+token_words = word_tokenize(data_file['Text'].to_string())
+
+#lemmatization
+lemmatize_words = []
+for w in token_words:
+    if(len(w)>3):
+        lemmatize_words.append(wlt.lemmatize(w))
+
+#Bags of Words
+text_dict = Dictionary([lemmatize_words])
+box_corpus = [text_dict.doc2bow(doc) for doc in [lemmatize_words]]
+print(text_dict.token2id)
+
