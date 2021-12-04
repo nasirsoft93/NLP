@@ -1,0 +1,21 @@
+import pandas as pd
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+
+
+def sentiment_Vader(text):
+    over_all_polarity = sid.polarity_scores(text)
+    if over_all_polarity['compound'] >= 0.05:
+        return "positive"
+    elif over_all_polarity['compound'] <= -0.05:
+        return "negative"
+    else:
+        return "neutral"
+
+
+sid = SentimentIntensityAnalyzer()
+
+data_file = pd.read_csv('E:/MS Thesis/Dataset MS Thesis/ALL DATA SQL/All Data For all Wave/first_wave.csv')
+
+data_file['sentiment_vader'] = data_file['text'].apply(lambda x: sentiment_Vader(x))
+# write file
+csv_data = data_file.to_csv('E:/MS Thesis/Dataset MS Thesis/ALL DATA SQL/All Data For all Wave/vader_sentiment.csv')
