@@ -1,0 +1,21 @@
+import pandas as pd
+from flair.models import TextClassifier
+from flair.data import Sentence
+sia = TextClassifier.load('en-sentiment')
+
+data_file = pd.read_csv('E:/MS Thesis/Dataset MS Thesis/ALL DATA SQL/All Data For all Wave/first_wave.csv')
+
+def sentiment_Flair(x):
+    sentence = Sentence(x)
+    sia.predict(sentence)
+    score = sentence.labels[0]
+    if "POSITIVE" in str(score):
+        return "positive"
+    elif "NEGATIVE" in str(score):
+        return "negative"
+    else:
+        return "neutral"
+
+data_file['sentiment_flair'] = data_file['text'].apply(lambda x: sentiment_Flair(x))
+# write file
+csv_data = data_file.to_csv('E:/MS Thesis/Dataset MS Thesis/ALL DATA SQL/All Data For all Wave/flair_sentiment.csv')
