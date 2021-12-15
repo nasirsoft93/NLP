@@ -1,0 +1,16 @@
+import text2emotion as te
+import pandas as pd
+
+def emotion_detection_text2emotion(x):
+    all_emotions_value = te.get_emotion(x)
+    Keymax_value = max(zip(all_emotions_value.values(), all_emotions_value.keys()))[1]
+    return Keymax_value
+
+
+data_file = pd.read_csv('E:/MS Thesis/Dataset MS Thesis/ALL DATA SQL/All Data For all Wave/first_wave.csv')
+data_file['emotion_text2emotion'] = data_file['text'].apply(emotion_detection_text2emotion)
+print(data_file['emotion_text2emotion'])
+exit()
+# write file
+csv_data = data_file.to_csv('E:/MS Thesis/Dataset MS Thesis/ALL DATA SQL/All Data For all Wave/NRClex_emotions.csv')
+#exel_data = data_file.to_excel('E:/MS Thesis/Dataset MS Thesis/ALL DATA SQL/All Data For all Wave/vader_sentiment_excel.xlsx')
